@@ -188,7 +188,7 @@ SPECTACULAR_SETTINGS = {
 CORS_ALLOW_ALL_ORIGINS = os.getenv('CORS_ALLOW_ALL_ORIGINS', 'False') == 'True'
 CORS_ALLOWED_ORIGINS = [
     origin.strip()
-    for origin in os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://127.0.0.1:3000').split(',')
+    for origin in os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://127.0.0.1:3000,https://multi_tenant.velev8.co').split(',')
     if origin.strip()
 ]
 CORS_ALLOW_CREDENTIALS = True
