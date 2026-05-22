@@ -3,10 +3,12 @@ import ResetPasswordPageContent from "./reset-password-content"
 
 export default function ResetPasswordPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
-      <Suspense fallback={<div className="text-muted-foreground">Loading...</div>}>
-        <ResetPasswordPageContent />
-      </Suspense>
-    </div>
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/30">
+        <div className="text-muted-foreground animate-pulse">Loading...</div>
+      </div>
+    }>
+      <ResetPasswordPageContent />
+    </Suspense>
   )
 }
