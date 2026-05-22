@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { createInvitation } from "@/services/invitation.service"
 import { getApiErrorMessage } from "@/lib/api/errors"
 import { Mail, Send } from "lucide-react"
@@ -20,7 +21,7 @@ export default function InvitationsPage() {
   const [showForm, setShowForm] = useState(false)
 
   const inviteMutation = useMutation({
-    mutationFn: (data) => createInvitation(data),
+    mutationFn: (data: any) => createInvitation(data),
     onSuccess: () => {
       toast.success("Invitation sent successfully!")
       setEmail("")
@@ -85,16 +86,15 @@ export default function InvitationsPage() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="role">Role</Label>
-                  <select
-                    id="role"
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                    disabled={inviteMutation.isPending}
-                    className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                  >
-                    <option value="member">Member</option>
-                    <option value="admin">Admin</option>
-                  </select>
+                  <Select value={role} onValueChange={setRole} disabled={inviteMutation.isPending}>
+                    <SelectTrigger id="role">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="member">Member</SelectItem>
+                      <SelectItem value="admin">Admin</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
               <div className="flex justify-end gap-2">

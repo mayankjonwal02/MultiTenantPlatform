@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
 import { getOrganization } from "@/services/organization.service"
 import { getMemberships } from "@/services/membership.service"
-import { Building2, Users, Calendar, Zap, Edit } from "lucide-react"
+import { Users, Zap, Edit } from "lucide-react"
 
 interface OrganizationDetailProps {
   id: string
@@ -45,14 +45,6 @@ export default function OrganizationDetail({ id }: OrganizationDetailProps) {
     )
   }
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    })
-  }
-
   return (
     <div className="space-y-6">
       <Card>
@@ -83,10 +75,6 @@ export default function OrganizationDetail({ id }: OrganizationDetailProps) {
               <div className="flex items-center gap-2">
                 <Badge variant="outline">{organization.subscription_plan || "free"}</Badge>
               </div>
-            </div>
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Created</p>
-              <p className="text-sm">{formatDate(organization.created_at)}</p>
             </div>
           </div>
         </CardContent>

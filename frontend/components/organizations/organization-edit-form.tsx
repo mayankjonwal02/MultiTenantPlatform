@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { getOrganization, updateOrganization } from "@/services/organization.service"
 import { getApiErrorMessage } from "@/lib/api/errors"
 import { ArrowLeft } from "lucide-react"
@@ -41,7 +42,7 @@ export default function OrganizationEditForm({ id }: OrganizationEditFormProps) 
   })
 
   const updateMutation = useMutation({
-    mutationFn: (data) => updateOrganization(id, data),
+    mutationFn: (data: any) => updateOrganization(id, data),
     onSuccess: () => {
       toast.success("Organization updated successfully")
       setIsEditing(false)
@@ -132,17 +133,24 @@ export default function OrganizationEditForm({ id }: OrganizationEditFormProps) 
 
             <div className="space-y-2">
               <Label htmlFor="subscription_plan">Subscription Plan</Label>
-              <select
-                id="subscription_plan"
+              <Select
                 defaultValue={organization.subscription_plan || "free"}
+                onValueChange={(value) =>
+                  register("subscription_plan").onChange({
+                    target: { value },
+                  })
+                }
                 disabled={updateMutation.isPending}
-                className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                {...register("subscription_plan")}
               >
-                <option value="free">Free</option>
-                <option value="pro">Pro</option>
-                <option value="enterprise">Enterprise</option>
-              </select>
+                <SelectTrigger id="subscription_plan">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="free">Free</SelectItem>
+                  <SelectItem value="pro">Pro</SelectItem>
+                  <SelectItem value="enterprise">Enterprise</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="flex justify-end gap-2 pt-4">
