@@ -28,3 +28,13 @@ export const acceptInvitation = async (
   const response = await apiClient.post(`/invitations/${token}/`)
   return response.data
 }
+
+export const listInvitations = async () => {
+  const response = await apiClient.get("/invitations/")
+  return response.data
+}
+
+export const revokeInvitation = async (token: string) => {
+  const response = await apiClient.delete(`/invitations/${token}/`)
+  return response.data
+}

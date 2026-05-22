@@ -9,6 +9,7 @@ interface AuthState {
     refresh: string
   ) => void
   logout: () => void
+  initializeFromCookies: () => void
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -37,5 +38,11 @@ export const useAuthStore = create<AuthState>((set) => ({
       accessToken: null,
       refreshToken: null,
     })
+  },
+
+  initializeFromCookies: () => {
+    const accessToken = Cookies.get("access_token")
+    const refreshToken = Cookies.get("refresh_token")
+    set({ accessToken: accessToken || null, refreshToken: refreshToken || null })
   },
 }))

@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   Users,
   Building2,
+  Mail,
 } from "lucide-react"
 
 const sidebarItems = [
@@ -19,6 +20,11 @@ const sidebarItems = [
     title: "Members",
     href: "/dashboard/members",
     icon: Users,
+  },
+  {
+    title: "Invitations",
+    href: "/dashboard/invitations",
+    icon: Mail,
   },
   {
     title: "Organizations",

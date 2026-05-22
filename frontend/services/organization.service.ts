@@ -32,6 +32,17 @@ export const getOrganization = async (
   return response.data
 }
 
+export const updateOrganization = async (
+  id: string,
+  payload: Partial<CreateOrganizationPayload>
+): Promise<Organization> => {
+  const response = await apiClient.put(
+    `/organizations/${id}/`,
+    payload
+  )
+  return response.data
+}
+
 export const ensureSelectedOrganization = async (): Promise<Organization | null> => {
   const selectedTenantId = Cookies.get("tenant_id")
   const organizations = await listOrganizations()
