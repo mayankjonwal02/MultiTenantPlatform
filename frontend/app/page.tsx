@@ -34,22 +34,22 @@ export default function Home() {
           </div>
 
           <div className="max-w-4xl mx-auto text-center">
-            <div className="mb-6 inline-block">
+            <div className="mb-6 inline-block animate-fade-in-up" style={{ animationDelay: "100ms" }}>
               <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-4 py-2">
                 <Zap className="h-4 w-4 mr-2 text-primary" />
                 <span className="text-sm font-medium">Production-ready SaaS platform</span>
               </div>
             </div>
 
-            <h1 className="mb-6 text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-balance">
+            <h1 className="mb-6 text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-balance animate-fade-in-up" style={{ animationDelay: "200ms" }}>
               Enterprise-Grade Organization Management
             </h1>
 
-            <p className="mx-auto mb-8 max-w-2xl text-lg sm:text-xl text-muted-foreground text-balance">
+            <p className="mx-auto mb-8 max-w-2xl text-lg sm:text-xl text-muted-foreground text-balance animate-fade-in-up" style={{ animationDelay: "300ms" }}>
               Built with Next.js and Django REST Framework. Manage multiple organizations, invite members, assign roles, and streamline your team collaboration with a powerful multi-tenant architecture.
             </p>
 
-            <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12 animate-fade-in-up" style={{ animationDelay: "400ms" }}>
               <Button size="lg" asChild className="gap-2">
                 <Link href="/signup">
                   Get started for free
@@ -61,7 +61,7 @@ export default function Home() {
               </Button>
             </div>
 
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground animate-fade-in" style={{ animationDelay: "500ms" }}>
               No credit card required. Free tier includes up to 3 organizations.
             </p>
           </div>
@@ -81,7 +81,7 @@ export default function Home() {
 
             <div className="grid gap-6 md:grid-cols-3 lg:gap-8">
               {/* Feature 1 */}
-              <div className="group relative overflow-hidden rounded-2xl border border-border bg-card p-8 hover:shadow-lg transition-all hover:border-primary/50">
+              <div className="group relative overflow-hidden rounded-2xl border border-border bg-card p-8 hover:shadow-lg transition-all hover:border-primary/50 animate-fade-in-up" style={{ animationDelay: "200ms" }}>
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="relative z-10">
                   <div className="mb-4 inline-block rounded-lg bg-primary/10 p-3">
@@ -95,7 +95,7 @@ export default function Home() {
               </div>
 
               {/* Feature 2 */}
-              <div className="group relative overflow-hidden rounded-2xl border border-border bg-card p-8 hover:shadow-lg transition-all hover:border-primary/50">
+              <div className="group relative overflow-hidden rounded-2xl border border-border bg-card p-8 hover:shadow-lg transition-all hover:border-primary/50 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="relative z-10">
                   <div className="mb-4 inline-block rounded-lg bg-primary/10 p-3">
@@ -109,7 +109,7 @@ export default function Home() {
               </div>
 
               {/* Feature 3 */}
-              <div className="group relative overflow-hidden rounded-2xl border border-border bg-card p-8 hover:shadow-lg transition-all hover:border-primary/50">
+              <div className="group relative overflow-hidden rounded-2xl border border-border bg-card p-8 hover:shadow-lg transition-all hover:border-primary/50 animate-fade-in-up" style={{ animationDelay: "400ms" }}>
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="relative z-10">
                   <div className="mb-4 inline-block rounded-lg bg-primary/10 p-3">

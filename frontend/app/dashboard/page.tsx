@@ -21,8 +21,8 @@ export default function DashboardPage() {
     queryFn: () => getMemberships(1),
   })
 
-  const StatCard = ({ icon: Icon, label, value, loading }: any) => (
-    <Card className="group hover:shadow-lg transition-all hover:border-primary/50">
+  const StatCard = ({ icon: Icon, label, value, loading, delay }: any) => (
+    <Card className="group hover:shadow-lg transition-all hover:border-primary/50 animate-fade-in-up" style={{ animationDelay: `${delay}ms` }}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{label}</CardTitle>
         <div className="rounded-lg bg-primary/10 p-2 group-hover:bg-primary/20 transition-colors">
@@ -31,7 +31,7 @@ export default function DashboardPage() {
       </CardHeader>
       <CardContent>
         {loading ? (
-          <Skeleton className="h-8 w-20" />
+          <Skeleton className="h-8 w-20 animate-shimmer" />
         ) : (
           <div className="text-3xl font-bold">{value}</div>
         )}
@@ -41,12 +41,12 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      <div>
+      <div className="animate-fade-in">
         <Breadcrumb items={[{ label: "Dashboard" }]} />
       </div>
 
       {/* Welcome Section */}
-      <div className="space-y-2">
+      <div className="space-y-2 animate-fade-in-up">
         <h1 className="text-3xl font-bold tracking-tight">Welcome back</h1>
         <p className="text-muted-foreground">
           Manage your organizations, members, and team collaboration
@@ -60,14 +60,16 @@ export default function DashboardPage() {
           label="Organizations" 
           value={organizations.length} 
           loading={organizationsLoading}
+          delay={0}
         />
         <StatCard 
           icon={Users} 
           label="Total Members" 
           value={memberships?.count ?? 0} 
           loading={membershipsLoading}
+          delay={100}
         />
-        <Card className="group hover:shadow-lg transition-all hover:border-primary/50">
+        <Card className="group hover:shadow-lg transition-all hover:border-primary/50 animate-fade-in-up" style={{ animationDelay: "200ms" }}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Active Teams</CardTitle>
             <div className="rounded-lg bg-primary/10 p-2 group-hover:bg-primary/20 transition-colors">
@@ -79,11 +81,11 @@ export default function DashboardPage() {
             <p className="text-xs text-muted-foreground mt-1">This month</p>
           </CardContent>
         </Card>
-        <Card className="group hover:shadow-lg transition-all hover:border-primary/50">
+        <Card className="group hover:shadow-lg transition-all hover:border-primary/50 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Status</CardTitle>
             <div className="rounded-lg bg-green-100 dark:bg-green-900/20 p-2">
-              <div className="h-2 w-2 rounded-full bg-green-600" />
+              <div className="h-2 w-2 rounded-full bg-green-600 animate-pulse-soft" />
             </div>
           </CardHeader>
           <CardContent>
@@ -94,9 +96,9 @@ export default function DashboardPage() {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 animate-fade-in-up" style={{ animationDelay: "400ms" }}>
         {/* Create Organization Card */}
-        <Card className="group hover:shadow-lg transition-all hover:border-primary/50 border-dashed border-2">
+        <Card className="group hover:shadow-lg transition-all hover:border-primary/50 border-dashed border-2 hover:bg-muted/30">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Building2 className="h-5 w-5 text-primary" />
@@ -140,7 +142,7 @@ export default function DashboardPage() {
 
       {/* Organizations Overview */}
       {organizations.length > 0 && (
-        <Card>
+        <Card className="animate-fade-in-up" style={{ animationDelay: "500ms" }}>
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
               <CardTitle>Your Organizations</CardTitle>
@@ -182,7 +184,7 @@ export default function DashboardPage() {
 
       {/* Empty State */}
       {organizations.length === 0 && (
-        <Card className="border-dashed">
+        <Card className="border-dashed animate-fade-in-up" style={{ animationDelay: "400ms" }}>
           <CardContent className="pt-8 pb-8 text-center space-y-4">
             <div className="flex justify-center">
               <div className="rounded-lg bg-primary/10 p-4">
