@@ -37,7 +37,7 @@ if not DEBUG and (SECRET_KEY == 'replace_me' or len(SECRET_KEY) < 32):
 
 ALLOWED_HOSTS = [
     host.strip()
-    for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+    for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,multi_tenant.velev8.co').split(',')
     if host.strip()
 ]
 
@@ -209,6 +209,7 @@ CORS_ALLOW_HEADERS = [
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://multi_tenant.velev8.co",
     os.getenv('FRONTEND_URL', 'http://localhost:3000'),
 ]
 CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript to read CSRF token for admin panel
