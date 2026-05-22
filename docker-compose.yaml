@@ -172,6 +172,7 @@ services:
       - "3000:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./backend/staticfiles:/app/staticfiles:ro
     depends_on:
       - frontend
       - django
