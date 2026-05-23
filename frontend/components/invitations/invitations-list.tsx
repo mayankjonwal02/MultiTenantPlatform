@@ -98,25 +98,25 @@ export default function InvitationsList() {
       {invitations.map((invitation: any) => (
         <Card key={invitation.token}>
           <CardContent className="pt-6">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex flex-1 items-center gap-4">
-                <div className="rounded-lg bg-primary/10 p-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-1 items-center gap-3 min-w-0">
+                <div className="rounded-lg bg-primary/10 p-3 shrink-0">
                   <Mail className="h-5 w-5 text-primary" />
                 </div>
-                <div className="flex-1">
-                  <p className="font-medium">{invitation.email}</p>
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium truncate">{invitation.email}</p>
                   <p className="text-sm text-muted-foreground">
                     Role: {invitation.role}
                   </p>
-                  <div className="mt-2 flex items-center gap-2">
-                    <Calendar className="h-3 w-3 text-muted-foreground" />
+                  <div className="mt-1 flex items-center gap-2">
+                    <Calendar className="h-3 w-3 text-muted-foreground shrink-0" />
                     <span className="text-xs text-muted-foreground">
                       Created: {formatDate(invitation.created_at)}
                     </span>
                   </div>
                 </div>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 self-end sm:self-auto">
                 {getStatusBadge(invitation.status)}
                 {invitation.status === "pending" && (
                   <Button

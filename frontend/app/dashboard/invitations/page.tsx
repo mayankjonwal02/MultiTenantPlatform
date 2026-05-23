@@ -51,12 +51,12 @@ export default function InvitationsPage() {
         <Breadcrumb items={[{ label: "Dashboard", href: "/dashboard" }, { label: "Invitations" }]} />
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Invitations</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Invitations</h1>
           <p className="mt-1 text-muted-foreground">Manage member invitations for your organization</p>
         </div>
-        <Button onClick={() => setShowForm(!showForm)} size="lg" className="gap-2">
+        <Button onClick={() => setShowForm(!showForm)} size="lg" className="gap-2 self-start sm:self-auto">
           <Send className="h-4 w-4" />
           {showForm ? "Cancel" : "Send Invitation"}
         </Button>

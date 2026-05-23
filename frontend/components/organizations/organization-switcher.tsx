@@ -60,11 +60,11 @@ export default function OrganizationSwitcher() {
   }
 
   return (
-    <div className="flex min-w-56 items-center gap-2">
-      <Building2 className="h-4 w-4 text-muted-foreground" />
+    <div className="flex items-center gap-2 min-w-0 max-w-[180px] sm:max-w-xs">
+      <Building2 className="h-4 w-4 text-muted-foreground shrink-0 hidden sm:block" />
       <Select value={currentOrganizationId} onValueChange={handleChange}>
-        <SelectTrigger className="h-9">
-          <SelectValue placeholder="Select organization" />
+        <SelectTrigger className="h-9 min-w-0 truncate">
+          <SelectValue placeholder="Select org" />
         </SelectTrigger>
         <SelectContent>
           {organizations.map((organization) => (

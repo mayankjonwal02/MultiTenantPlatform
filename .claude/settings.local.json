@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell(npx playwright screenshot --browser chromium \"http://localhost:3000/admin/\" \"C:\\\\Users\\\\mayan\\\\AppData\\\\Local\\\\Temp\\\\admin_screenshot.png\" 2>&1)"
+      "PowerShell(npx playwright screenshot --browser chromium \"http://localhost:3000/admin/\" \"C:\\\\Users\\\\mayan\\\\AppData\\\\Local\\\\Temp\\\\admin_screenshot.png\" 2>&1)",
+      "Bash(docker-compose down *)",
+      "Bash(docker-compose up *)",
+      "Bash(node_modules/.bin/tsc --noEmit)"
     ]
   }
 }

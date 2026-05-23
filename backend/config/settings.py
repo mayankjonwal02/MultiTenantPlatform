@@ -36,8 +36,16 @@ if not DEBUG and (SECRET_KEY == 'replace_me' or len(SECRET_KEY) < 32):
     raise ImproperlyConfigured("DJANGO_SECRET_KEY must be set to a strong value in production.")
 
 ALLOWED_HOSTS = [
+    'multi-tenant.velev8.co',
+    '.velev8.co',
+    'localhost',
+    '127.0.0.1',
+    'django',
+    'nginx',
+    'host.docker.internal',
+] + [
     host.strip()
-    for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,multi_tenant.velev8.co').split(',')
+    for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
     if host.strip()
 ]
 
@@ -188,7 +196,7 @@ SPECTACULAR_SETTINGS = {
 CORS_ALLOW_ALL_ORIGINS = os.getenv('CORS_ALLOW_ALL_ORIGINS', 'False') == 'True'
 CORS_ALLOWED_ORIGINS = [
     origin.strip()
-    for origin in os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://127.0.0.1:3000,https://multi_tenant.velev8.co').split(',')
+    for origin in os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://127.0.0.1:3000,https://multi-tenant.velev8.co').split(',')
     if origin.strip()
 ]
 CORS_ALLOW_CREDENTIALS = True
@@ -209,10 +217,14 @@ CORS_ALLOW_HEADERS = [
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://multi_tenant.velev8.co",
+    "https://multi-tenant.velev8.co",
     os.getenv('FRONTEND_URL', 'http://localhost:3000'),
 ]
 CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript to read CSRF token for admin panel
+
+# Reverse proxy (Cloudflare + nginx) trust
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = False  # nginx passes correct Host header via proxy_set_header Host $host
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
