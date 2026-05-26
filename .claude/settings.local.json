@@ -5,7 +5,11 @@
       "Bash(xargs grep -l \"DEFAULT_FROM_EMAIL\\\\|EMAIL_BACKEND\")",
       "Bash(python3 -c \"import pkg_resources; pkg = pkg_resources.working_set.by_key.get\\('django-rest-framework'\\); print\\('Package exists:', bool\\(pkg\\)\\)\")",
       "Bash(Get-ChildItem -Path \"d:\\\\Startups\\\\No Name\\\\multi-tenant-platform\\\\frontend\\\\app\\\\dashboard\\\\organizations\" -Recurse)",
-      "Bash(Select-Object FullName)"
+      "Bash(Select-Object FullName)",
+      "Bash(docker-compose down *)",
+      "Bash(docker-compose up *)",
+      "Bash(node_modules/.bin/tsc --noEmit)",
+      "Bash(git add *)"
     ]
   }
 }

@@ -47,7 +47,7 @@ export default function DashboardPage() {
 
       {/* Welcome Section */}
       <div className="space-y-2 animate-fade-in-up">
-        <h1 className="text-3xl font-bold tracking-tight">Welcome back</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Welcome back</h1>
         <p className="text-muted-foreground">
           Manage your organizations, members, and team collaboration
         </p>
@@ -143,14 +143,14 @@ export default function DashboardPage() {
       {/* Organizations Overview */}
       {organizations.length > 0 && (
         <Card className="animate-fade-in-up" style={{ animationDelay: "500ms" }}>
-          <CardHeader className="flex flex-row items-center justify-between">
+          <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <CardTitle>Your Organizations</CardTitle>
               <CardDescription>
                 Manage your organizations and team members
               </CardDescription>
             </div>
-            <Button asChild variant="outline" size="sm">
+            <Button asChild variant="outline" size="sm" className="self-start sm:self-auto">
               <Link href="/dashboard/organizations">
                 View all
                 <ArrowRight className="h-4 w-4 ml-2" />

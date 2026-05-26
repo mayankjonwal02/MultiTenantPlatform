@@ -102,13 +102,13 @@ export default function MembersTable() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-md border">
+      <div className="rounded-md border overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Member</TableHead>
-              <TableHead>Organization</TableHead>
-              <TableHead>Role</TableHead>
+              <TableHead className="hidden sm:table-cell">Organization</TableHead>
+              <TableHead className="hidden sm:table-cell">Role</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -129,15 +129,15 @@ export default function MembersTable() {
                       <div className="text-xs text-muted-foreground">{member.user_email}</div>
                     )}
                   </TableCell>
-                  <TableCell>{member.organization_name ?? member.organization}</TableCell>
-                  <TableCell>{member.role_name ?? member.role ?? "-"}</TableCell>
+                  <TableCell className="hidden sm:table-cell">{member.organization_name ?? member.organization}</TableCell>
+                  <TableCell className="hidden sm:table-cell">{member.role_name ?? member.role ?? "-"}</TableCell>
                   <TableCell>
                     <Badge className={statusColors[member.status]} variant="outline">
                       {member.status}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
+                    <div className="flex justify-end gap-1 sm:gap-2">
                       <Button
                         variant="outline"
                         size="sm"
@@ -145,15 +145,38 @@ export default function MembersTable() {
                           setStatusDialogOpen(member.id)
                           setNewStatus(member.status)
                         }}
+                        className="hidden sm:inline-flex"
                       >
                         Change Status
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon-sm"
+                        onClick={() => {
+                          setStatusDialogOpen(member.id)
+                          setNewStatus(member.status)
+                        }}
+                        className="sm:hidden"
+                        title="Change Status"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                       </Button>
                       <Button
                         variant="destructive"
                         size="sm"
                         onClick={() => setDeleteDialogOpen(member.id)}
+                        className="hidden sm:inline-flex"
                       >
                         Remove
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="icon-sm"
+                        onClick={() => setDeleteDialogOpen(member.id)}
+                        className="sm:hidden"
+                        title="Remove"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
                       </Button>
                     </div>
                   </TableCell>

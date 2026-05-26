@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import Link from "next/link"
 import Cookies from "js-cookie"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
@@ -13,7 +14,7 @@ import { Badge } from "@/components/ui/badge"
 
 export default function OrganizationsList() {
   const queryClient = useQueryClient()
-  const selectedOrganizationId = Cookies.get("tenant_id")
+  const [selectedOrgId, setSelectedOrgId] = useState<string>(Cookies.get("tenant_id") ?? "")
 
   const { data: organizations = [], isLoading } = useQuery({
     queryKey: ["organizations"],
@@ -22,6 +23,7 @@ export default function OrganizationsList() {
 
   const handleSelectOrganization = (organizationId: string) => {
     Cookies.set("tenant_id", organizationId)
+    setSelectedOrgId(organizationId)
     queryClient.invalidateQueries({ queryKey: ["memberships"] })
     queryClient.invalidateQueries({ queryKey: ["organizations"] })
   }
@@ -56,7 +58,7 @@ export default function OrganizationsList() {
   return (
     <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
       {organizations.map((organization) => {
-        const isSelected = selectedOrganizationId === organization.id
+        const isSelected = selectedOrgId === organization.id
 
         return (
           <Card key={organization.id}>
