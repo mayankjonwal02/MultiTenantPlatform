@@ -29,8 +29,14 @@ export const acceptInvitation = async (
   return response.data
 }
 
-export const listInvitations = async () => {
-  const response = await apiClient.get("/invitations/")
+export const listInvitations = async (params?: {
+  status?: string
+  page?: number
+  organization_id?: string
+}) => {
+  const response = await apiClient.get("/invitations/", {
+    params,
+  })
   return response.data
 }
 

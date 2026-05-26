@@ -29,7 +29,7 @@ export default function OrganizationEditForm({ id }: OrganizationEditFormProps) 
     queryFn: () => getOrganization(id),
   })
 
-  const { register, handleSubmit, watch, reset, formState: { errors } } = useForm({
+  const { register, handleSubmit, watch, reset, setValue, formState: { errors } } = useForm({
     values: organization ? {
       name: organization.name,
       slug: organization.slug,
@@ -135,11 +135,7 @@ export default function OrganizationEditForm({ id }: OrganizationEditFormProps) 
               <Label htmlFor="subscription_plan">Subscription Plan</Label>
               <Select
                 defaultValue={organization.subscription_plan || "free"}
-                onValueChange={(value) =>
-                  register("subscription_plan").onChange({
-                    target: { value },
-                  })
-                }
+                onValueChange={(value) => setValue("subscription_plan", value)}
                 disabled={updateMutation.isPending}
               >
                 <SelectTrigger id="subscription_plan">

@@ -42,6 +42,9 @@ class Membership(BaseModel):
         auto_now_add=True
     )
 
+    def __str__(self):
+        return f"{self.user} in {self.organization} ({self.status})"
+
     class Meta:
 
         unique_together = (

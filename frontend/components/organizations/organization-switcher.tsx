@@ -6,6 +6,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { Building2 } from "lucide-react"
 
 import { listOrganizations } from "@/services/organization.service"
+import { useOrganization } from "@/providers/organization-provider"
 import {
   Select,
   SelectContent,
@@ -16,6 +17,7 @@ import {
 
 export default function OrganizationSwitcher() {
   const queryClient = useQueryClient()
+  const { selectedOrgId, setSelectedOrgId } = useOrganization()
   const [selectedOrganizationId, setSelectedOrganizationId] = useState("")
 
   const { data: organizations = [] } = useQuery({
@@ -30,8 +32,16 @@ export default function OrganizationSwitcher() {
   const cookieOrganization = organizations.find(
     (organization) => organization.id === cookieOrganizationId
   )
+  const contextOrganization = organizations.find(
+    (organization) => organization.id === selectedOrgId
+  )
+  
   const currentOrganizationId =
-    selectedOrganization?.id ?? cookieOrganization?.id ?? organizations[0]?.id ?? ""
+    selectedOrganization?.id ?? 
+    contextOrganization?.id ??
+    cookieOrganization?.id ?? 
+    organizations[0]?.id ?? 
+    ""
 
   useEffect(() => {
     if (organizations.length === 0) {
@@ -46,13 +56,16 @@ export default function OrganizationSwitcher() {
 
     if (!currentOrganization) {
       Cookies.set("tenant_id", organizations[0].id)
+      setSelectedOrgId(organizations[0].id)
     }
-  }, [organizations])
+  }, [organizations, setSelectedOrgId])
 
   const handleChange = (organizationId: string) => {
     Cookies.set("tenant_id", organizationId)
     setSelectedOrganizationId(organizationId)
+    setSelectedOrgId(organizationId)
     queryClient.invalidateQueries({ queryKey: ["memberships"] })
+    queryClient.invalidateQueries({ queryKey: ["invitations"] })
   }
 
   if (organizations.length === 0) {

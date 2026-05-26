@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
+import Cookies from "js-cookie"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -13,27 +14,38 @@ import { Trash2, Mail, Calendar, CheckCircle2, Clock } from "lucide-react"
 import { getApiErrorMessage } from "@/lib/api/errors"
 
 interface Invitation {
+  id: string
   token: string
   email: string
   role: string
   status: string
   created_at: string
+  organization_name: string
 }
 
 export default function InvitationsList() {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
   const queryClient = useQueryClient()
+  const organizationId = Cookies.get("tenant_id")
 
-  const { data: invitations = [], isLoading } = useQuery({
-    queryKey: ["invitations"],
-    queryFn: listInvitations,
+  const { data: invitationsData, isLoading } = useQuery({
+    queryKey: ["invitations", organizationId],
+    queryFn: () => listInvitations({ organization_id: organizationId }),
+    enabled: !!organizationId,
   })
+
+  const invitations = useMemo(() => {
+    if (invitationsData?.results) {
+      return invitationsData.results
+    }
+    return []
+  }, [invitationsData])
 
   const revokeMutation = useMutation({
     mutationFn: revokeInvitation,
     onSuccess: () => {
       toast.success("Invitation revoked successfully")
-      queryClient.invalidateQueries({ queryKey: ["invitations"] })
+      queryClient.invalidateQueries({ queryKey: ["invitations", organizationId] })
       setDeleteConfirm(null)
     },
     onError: (error) => {
@@ -82,6 +94,17 @@ export default function InvitationsList() {
     )
   }
 
+  if (!organizationId) {
+    return (
+      <Card>
+        <CardContent className="pt-6 text-center text-muted-foreground">
+          <Mail className="mx-auto mb-2 h-8 w-8 opacity-50" />
+          <p>Please select an organization to view invitations</p>
+        </CardContent>
+      </Card>
+    )
+  }
+
   if (invitations.length === 0) {
     return (
       <Card>
@@ -106,7 +129,7 @@ export default function InvitationsList() {
                 <div className="flex-1">
                   <p className="font-medium">{invitation.email}</p>
                   <p className="text-sm text-muted-foreground">
-                    Role: {invitation.role}
+                    Role: {invitation.role || "Not specified"}
                   </p>
                   <div className="mt-2 flex items-center gap-2">
                     <Calendar className="h-3 w-3 text-muted-foreground" />

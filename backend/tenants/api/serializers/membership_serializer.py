@@ -26,7 +26,33 @@ class MembershipSerializer(serializers.ModelSerializer):
 
         model = Membership
 
-        fields = "__all__"
+        fields = [
+            "id",
+            "user",
+            "user_email",
+            "user_name",
+            "organization",
+            "organization_name",
+            "role",
+            "role_name",
+            "status",
+            "joined_at",
+            "created_at",
+            "updated_at",
+        ]
+
+        read_only_fields = [
+            "id",
+            "user",
+            "user_email",
+            "user_name",
+            "organization",
+            "organization_name",
+            "role_name",
+            "joined_at",
+            "created_at",
+            "updated_at",
+        ]
 
     def get_user_name(self, obj):
         full_name = f"{obj.user.first_name} {obj.user.last_name}".strip()

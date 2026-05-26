@@ -1,6 +1,7 @@
 import os
 from django.db import transaction
 from django.utils import timezone
+from django.core.paginator import Paginator
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -15,7 +16,6 @@ from tenants.models.membership import Membership
 from tenants.models.organization import Organization
 from roles.models.role import Role
 
-from users.models import User
 from users.tasks import enqueue_task, send_invitation_email_task
 
 
@@ -23,6 +23,46 @@ class InvitationApiView(APIView):
 
     permission_classes = [IsAuthenticated]
     serializer_class = InvitationCreateSerializer
+
+    def get(self, request):
+        """
+        List invitations for the current organization.
+        Query params:
+        - status: Filter by status (pending, accepted, revoked, expired)
+        - page: Page number for pagination (default: 1)
+        """
+        organization = getattr(request, "tenant", None)
+        
+        if not organization:
+            return Response(
+                {"error": "No organization selected."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        queryset = Invitation.objects.filter(
+            organization=organization
+        ).select_related('organization', 'role').order_by('-created_at')
+        
+        status_filter = request.query_params.get('status')
+        if status_filter:
+            queryset = queryset.filter(status=status_filter)
+        
+        page_number = request.query_params.get('page', 1)
+        paginator = Paginator(queryset, 20)
+        
+        try:
+            page_obj = paginator.page(page_number)
+        except Exception:
+            page_obj = paginator.page(1)
+        
+        serializer = InvitationSerializer(page_obj.object_list, many=True)
+        
+        return Response({
+            'count': paginator.count,
+            'total_pages': paginator.num_pages,
+            'current_page': page_obj.number,
+            'results': serializer.data
+        })
 
     def post(self, request):
 
@@ -69,6 +109,16 @@ class InvitationApiView(APIView):
         ).exists():
             return Response(
                 {"error": "This user is already a member of the organization."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if Invitation.objects.filter(
+            email__iexact=email,
+            organization=organization,
+            status="pending",
+        ).exists():
+            return Response(
+                {"error": "A pending invitation already exists for this email address."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 

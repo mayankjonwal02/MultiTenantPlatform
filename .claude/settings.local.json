@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell(npx playwright screenshot --browser chromium \"http://localhost:3000/admin/\" \"C:\\\\Users\\\\mayan\\\\AppData\\\\Local\\\\Temp\\\\admin_screenshot.png\" 2>&1)"
+      "PowerShell(npx playwright screenshot --browser chromium \"http://localhost:3000/admin/\" \"C:\\\\Users\\\\mayan\\\\AppData\\\\Local\\\\Temp\\\\admin_screenshot.png\" 2>&1)",
+      "Bash(xargs grep -l \"DEFAULT_FROM_EMAIL\\\\|EMAIL_BACKEND\")",
+      "Bash(python3 -c \"import pkg_resources; pkg = pkg_resources.working_set.by_key.get\\('django-rest-framework'\\); print\\('Package exists:', bool\\(pkg\\)\\)\")",
+      "Bash(Get-ChildItem -Path \"d:\\\\Startups\\\\No Name\\\\multi-tenant-platform\\\\frontend\\\\app\\\\dashboard\\\\organizations\" -Recurse)",
+      "Bash(Select-Object FullName)"
     ]
   }
 }

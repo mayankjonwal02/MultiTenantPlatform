@@ -76,6 +76,11 @@ urlpatterns = [
         "api/invitations/",
         include("tenants.api.urls.invitation_urls")
     ),
+
+    path(
+        "api/roles/",
+        include("roles.api.urls.role_urls")
+    ),
 ]
 
 # Serve static files in development

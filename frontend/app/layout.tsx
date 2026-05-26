@@ -1,6 +1,7 @@
 import "./globals.css"
 
 import QueryProvider from "@/providers/query-provider"
+import { OrganizationProvider } from "@/providers/organization-provider"
 
 import { Toaster } from "sonner"
 
@@ -14,8 +15,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <QueryProvider>
-          {children}
-          <Toaster />
+          <OrganizationProvider>
+            {children}
+            <Toaster />
+          </OrganizationProvider>
         </QueryProvider>
       </body>
     </html>

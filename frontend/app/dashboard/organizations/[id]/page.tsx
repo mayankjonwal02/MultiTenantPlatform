@@ -1,5 +1,3 @@
-"use client"
-
 import Breadcrumb from "@/components/common/breadcrumb"
 import OrganizationDetail from "@/components/organizations/organization-detail"
 

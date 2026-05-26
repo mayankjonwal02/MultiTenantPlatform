@@ -8,7 +8,10 @@ import {
   Users,
   Building2,
   Mail,
+  Settings,
+  Shield,
 } from "lucide-react"
+import { useOrganization } from "@/providers/organization-provider"
 
 const sidebarItems = [
   {
@@ -35,6 +38,22 @@ const sidebarItems = [
 
 export default function Sidebar() {
   const pathname = usePathname()
+  const { selectedOrgId } = useOrganization()
+
+  const adminItems = selectedOrgId
+    ? [
+        {
+          title: "Manage Roles",
+          href: `/dashboard/organizations/${selectedOrgId}/admin/roles`,
+          icon: Settings,
+        },
+        {
+          title: "Member Permissions",
+          href: `/dashboard/organizations/${selectedOrgId}/admin/members`,
+          icon: Shield,
+        },
+      ]
+    : []
 
   return (
     <aside className="hidden border-r bg-muted/40 md:block md:w-64">
@@ -65,6 +84,34 @@ export default function Sidebar() {
             )
           })}
         </nav>
+
+        {adminItems.length > 0 && (
+          <div className="mt-4">
+            <div className="mb-1 px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Administration
+            </div>
+            <nav className="flex flex-col gap-1">
+              {adminItems.map((item) => {
+                const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`)
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                      isActive
+                        ? "bg-primary text-primary-foreground"
+                        : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                    )}
+                  >
+                    <item.icon className="h-4 w-4" />
+                    {item.title}
+                  </Link>
+                )
+              })}
+            </nav>
+          </div>
+        )}
       </div>
     </aside>
   )

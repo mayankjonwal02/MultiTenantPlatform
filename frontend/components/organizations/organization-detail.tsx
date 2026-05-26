@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
 import { getOrganization } from "@/services/organization.service"
 import { getMemberships } from "@/services/membership.service"
-import { Users, Zap, Edit } from "lucide-react"
+import { Users, Zap, Edit, Shield, Settings } from "lucide-react"
 
 interface OrganizationDetailProps {
   id: string
@@ -122,6 +122,29 @@ export default function OrganizationDetail({ id }: OrganizationDetailProps) {
           <Button asChild variant="outline" className="w-full justify-start">
             <Link href="/dashboard/members">
               View All Members
+            </Link>
+          </Button>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Shield className="h-5 w-5" />
+            Administration
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <Button asChild variant="outline" className="w-full justify-start">
+            <Link href={`/dashboard/organizations/${id}/admin/roles`}>
+              <Settings className="h-4 w-4 mr-2" />
+              Manage Roles
+            </Link>
+          </Button>
+          <Button asChild variant="outline" className="w-full justify-start">
+            <Link href={`/dashboard/organizations/${id}/admin/members`}>
+              <Shield className="h-4 w-4 mr-2" />
+              Member Permissions
             </Link>
           </Button>
         </CardContent>
