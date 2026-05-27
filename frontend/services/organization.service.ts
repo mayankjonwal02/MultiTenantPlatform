@@ -43,6 +43,15 @@ export const updateOrganization = async (
   return response.data
 }
 
+export const transferOwnership = async (
+  orgId: string,
+  membershipId: string
+): Promise<void> => {
+  await apiClient.post(`/organizations/${orgId}/transfer-ownership/`, {
+    membership_id: membershipId,
+  })
+}
+
 export const ensureSelectedOrganization = async (): Promise<Organization | null> => {
   const selectedTenantId = Cookies.get("tenant_id")
   const organizations = await listOrganizations()

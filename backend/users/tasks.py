@@ -4,7 +4,8 @@ import logging
 from users.services.email_service import (
     send_password_reset_email,
     send_verification_email,
-    send_invitation_email
+    send_invitation_email,
+    send_ownership_transfer_email,
 )
 
 logger = logging.getLogger(__name__)
@@ -40,3 +41,9 @@ def send_verification_email_task(email, user_name, verification_link):
 def send_invitation_email_task(email, inviter_name, organization_name, invite_link):
     """Async task to send invitation email"""
     return send_invitation_email(email, inviter_name, organization_name, invite_link)
+
+
+@shared_task
+def send_ownership_transfer_email_task(new_owner_email, new_owner_name, org_name, previous_owner_name):
+    """Async task to notify new owner of ownership transfer"""
+    return send_ownership_transfer_email(new_owner_email, new_owner_name, org_name, previous_owner_name)

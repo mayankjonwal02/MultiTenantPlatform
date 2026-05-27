@@ -8,29 +8,28 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
 import { getOrganization } from "@/services/organization.service"
-import { getMemberships } from "@/services/membership.service"
-import { Users, Zap, Edit, Shield, Settings } from "lucide-react"
+import { Crown, Users, Zap, Edit, Shield, Settings, Calendar, ArrowRightLeft } from "lucide-react"
+import TransferOwnershipModal from "@/components/organizations/transfer-ownership-modal"
 
 interface OrganizationDetailProps {
   id: string
 }
 
 export default function OrganizationDetail({ id }: OrganizationDetailProps) {
-  const { data: organization, isLoading: orgLoading } = useQuery({
+  const [transferModalOpen, setTransferModalOpen] = useState(false)
+
+  const { data: organization, isLoading } = useQuery({
     queryKey: ["organization", id],
     queryFn: () => getOrganization(id),
   })
 
-  const { data: members, isLoading: membersLoading } = useQuery({
-    queryKey: ["memberships", id],
-    queryFn: () => getMemberships(parseInt(id)),
-  })
-
-  if (orgLoading) {
+  if (isLoading) {
     return (
       <div className="space-y-4">
         <Skeleton className="h-12" />
-        <Skeleton className="h-64" />
+        <Skeleton className="h-48" />
+        <Skeleton className="h-32" />
+        <Skeleton className="h-32" />
       </div>
     )
   }
@@ -45,13 +44,28 @@ export default function OrganizationDetail({ id }: OrganizationDetailProps) {
     )
   }
 
+  const formattedDate = organization.created_at
+    ? new Date(organization.created_at).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : null
+
   return (
     <div className="space-y-6">
+      {/* Header */}
       <Card>
         <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4">
           <div className="space-y-1">
             <CardTitle className="text-2xl">{organization.name}</CardTitle>
             <CardDescription>Organization details and settings</CardDescription>
+            {formattedDate && (
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground pt-1">
+                <Calendar className="h-3 w-3" />
+                <span>Created {formattedDate}</span>
+              </div>
+            )}
           </div>
           <Button asChild>
             <Link href={`/dashboard/organizations/${id}/edit`} className="gap-2">
@@ -60,26 +74,62 @@ export default function OrganizationDetail({ id }: OrganizationDetailProps) {
             </Link>
           </Button>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent>
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Organization ID</p>
-              <p className="font-mono text-sm">{organization.id}</p>
+            <div className="space-y-1">
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Organization ID</p>
+              <p className="font-mono text-sm break-all">{organization.id}</p>
             </div>
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Slug</p>
+            <div className="space-y-1">
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Slug</p>
               <p className="font-mono text-sm">{organization.slug}</p>
             </div>
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Subscription Plan</p>
-              <div className="flex items-center gap-2">
-                <Badge variant="outline">{organization.subscription_plan || "free"}</Badge>
-              </div>
+            <div className="space-y-1">
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Subscription Plan</p>
+              <Badge variant="outline" className="capitalize">
+                {organization.subscription_plan || "free"}
+              </Badge>
             </div>
           </div>
         </CardContent>
       </Card>
 
+      {/* Ownership */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Crown className="h-5 w-5" />
+            Ownership
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between rounded-lg bg-primary/5 p-4">
+            <div className="space-y-0.5">
+              <p className="font-semibold">{organization.owner_name || "—"}</p>
+              {organization.owner_email && (
+                <p className="text-sm text-muted-foreground">{organization.owner_email}</p>
+              )}
+            </div>
+            <Badge variant="secondary" className="gap-1">
+              <Crown className="h-3 w-3" />
+              Owner
+            </Badge>
+          </div>
+
+          {organization.is_owner && (
+            <Button
+              variant="outline"
+              className="w-full justify-start gap-2 text-destructive border-destructive/30 hover:bg-destructive/5 hover:text-destructive"
+              onClick={() => setTransferModalOpen(true)}
+            >
+              <ArrowRightLeft className="h-4 w-4" />
+              Transfer Ownership
+            </Button>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Members */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -88,24 +138,19 @@ export default function OrganizationDetail({ id }: OrganizationDetailProps) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {membersLoading ? (
-            <Skeleton className="h-12" />
-          ) : (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between rounded-lg bg-primary/5 p-4">
-                <div>
-                  <p className="font-semibold">{members?.count || 0}</p>
-                  <p className="text-sm text-muted-foreground">Total members</p>
-                </div>
-                <Button asChild variant="outline" size="sm">
-                  <Link href="/dashboard/members">Manage Members</Link>
-                </Button>
-              </div>
+          <div className="flex items-center justify-between rounded-lg bg-primary/5 p-4">
+            <div>
+              <p className="font-semibold">{organization.member_count ?? 0}</p>
+              <p className="text-sm text-muted-foreground">Active members</p>
             </div>
-          )}
+            <Button asChild variant="outline" size="sm">
+              <Link href="/dashboard/members">Manage Members</Link>
+            </Button>
+          </div>
         </CardContent>
       </Card>
 
+      {/* Quick Actions */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -115,18 +160,15 @@ export default function OrganizationDetail({ id }: OrganizationDetailProps) {
         </CardHeader>
         <CardContent className="space-y-2">
           <Button asChild variant="outline" className="w-full justify-start">
-            <Link href="/dashboard/invitations">
-              Send Invitation
-            </Link>
+            <Link href="/dashboard/invitations">Send Invitation</Link>
           </Button>
           <Button asChild variant="outline" className="w-full justify-start">
-            <Link href="/dashboard/members">
-              View All Members
-            </Link>
+            <Link href="/dashboard/members">View All Members</Link>
           </Button>
         </CardContent>
       </Card>
 
+      {/* Administration */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -149,6 +191,13 @@ export default function OrganizationDetail({ id }: OrganizationDetailProps) {
           </Button>
         </CardContent>
       </Card>
+
+      <TransferOwnershipModal
+        isOpen={transferModalOpen}
+        onOpenChange={setTransferModalOpen}
+        organizationId={id}
+        organizationName={organization.name}
+      />
     </div>
   )
 }

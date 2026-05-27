@@ -180,3 +180,54 @@ def send_invitation_email(email, inviter_name, organization_name, invite_link):
     except Exception as e:
         logger.error(f"Error sending invitation email to {email}: {str(e)}")
         return False
+
+
+def send_ownership_transfer_email(new_owner_email, new_owner_name, org_name, previous_owner_name):
+    """
+    Notify the new owner that ownership of an organization has been transferred to them.
+    """
+    subject = f"You are now the owner of {org_name}"
+
+    html_message = f"""
+    <html>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                <h2>Ownership Transfer</h2>
+                <p>Hello {new_owner_name},</p>
+                <p><strong>{previous_owner_name}</strong> has transferred ownership of
+                <strong>{org_name}</strong> to you.</p>
+                <p>You are now the owner of this organization and have full administrative access.</p>
+                <p>If you believe this was done in error, please contact your administrator immediately.</p>
+                <p>Best regards,<br>The Team</p>
+            </div>
+        </body>
+    </html>
+    """
+
+    plain_message = f"""
+    Hello {new_owner_name},
+
+    {previous_owner_name} has transferred ownership of {org_name} to you.
+
+    You are now the owner of this organization and have full administrative access.
+
+    If you believe this was done in error, please contact your administrator immediately.
+
+    Best regards,
+    The Team
+    """
+
+    try:
+        send_mail(
+            subject=subject,
+            message=plain_message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[new_owner_email],
+            html_message=html_message,
+            fail_silently=False,
+        )
+        logger.info(f"Ownership transfer email sent to {new_owner_email}")
+        return True
+    except Exception as e:
+        logger.error(f"Error sending ownership transfer email to {new_owner_email}: {str(e)}")
+        return False

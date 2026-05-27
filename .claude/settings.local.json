@@ -9,7 +9,11 @@
       "Bash(docker-compose down *)",
       "Bash(docker-compose up *)",
       "Bash(node_modules/.bin/tsc --noEmit)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git push *)",
+      "Bash(Get-ChildItem -Path \"d:\\\\Startups\\\\No Name\\\\multi-tenant-platform\\\\frontend\" -Directory)",
+      "Bash(Select-Object -ExpandProperty Name)",
+      "Bash(grep -E \"\\\\.\\(tsx|ts\\)$\")"
     ]
   }
 }
