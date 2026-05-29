@@ -251,3 +251,40 @@ class InvitationAcceptApiView(APIView):
                 "organization": str(invitation.organization_id),
             }
         )
+
+    def delete(self, request, token):
+        if not request.user.is_authenticated:
+            return Response(
+                {"error": "Authentication required to revoke an invitation."},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        invitation = self.get_invitation(token)
+
+        if not invitation:
+            return Response(
+                {"error": "Invitation not found."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        organization = getattr(request, "tenant", None)
+        if not organization or invitation.organization_id != organization.id:
+            return Response(
+                {"error": "You do not have permission to revoke this invitation."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        if invitation.status != "pending":
+            return Response(
+                {"error": f"Cannot revoke an invitation with status '{invitation.status}'."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        invitation.status = "revoked"
+        invitation.updated_by = request.user
+        invitation.save(update_fields=["status", "updated_by", "updated_at"])
+
+        return Response(
+            {"message": "Invitation revoked successfully."},
+            status=status.HTTP_200_OK
+        )
